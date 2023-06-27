@@ -26,8 +26,14 @@ module EmbedMe
         def embedded?
           # using path instead of params because path[:embed] != params[:embed] if
           # URL: http://localhost:3000/posts?embed=embed
-          path = Rails.application.routes.recognize_path(request.path)
-          path[:embedded].present?
+          begin
+            path = Rails.application.routes.recognize_path(request.path)
+            path[:embedded].present?
+          rescue Exception => error
+            false
+          rescue StandardError => error
+            false
+          end
         end
       end
     end
